@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LunarisCar - Cadastro e Histórico de Máquinas</title>
+  <link rel="icon" type="image/x-icon" href="IMG/ChatGPT Image 31 de out. de 2025, 10_12_28.png">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+
+    body {
+      background-color: #000;
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+    }
+
+    header {
+      background-color: #000;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    header img {
+      max-width: 80px;
+      cursor: pointer;
+    }
+     .acesse-btn {
+      background-color: #fff;
+      color: #000;
+      padding: 10px 20px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+      position: absolute;
+      right: 20px;
+    }
+
+    .acesse-btn:hover {
+      background-color: #ddd;
+    }
+     .historico-btn {
+      background-color: #fff;
+      color: #000;
+      padding: 10px 20px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+      position: absolute;
+      right: 20px;
+    }
+
+    .historico-btn:hover {
+      background-color: #ddd;
+    }
+    .frase-impacto {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+      flex: 1;
+      margin: 0 20px;
+      font-style: italic;
+      letter-spacing: 1px;
+    }
+
+    .form-container {
+      background-color: rgba(5, 38, 80, 0.85);
+      padding: 40px 50px;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgb(255, 255, 255);
+      width: 350px;
+      text-align: center;
+      margin: 50px auto;
+    }
+
+    .form-container h2 {
+      margin-bottom: 20px;
+      color: #ffffff;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 5px;
+      color: #ccc;
+    }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #333;
+      background-color: #111;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .submit-btn {
+      background-color: #00aaff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+      margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+      background-color: #0077cc;
+    }
+
+
+    .imagem-card {
+      background-color: #111;
+      border: 2px solid #333;
+      border-radius: 15px;
+      overflow: hidden;
+      width: 350px;
+      height: 250px;
+      transition: 0.3s;
+      position: relative;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+    }
+
+    .imagem-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: 0.4s;
+    }
+
+    .imagem-card:hover {
+      transform: scale(1.05);
+      border-color: #00aaff;
+      box-shadow: 0 0 25px rgba(0, 170, 255, 0.3);
+    }
+
+    .imagem-card:hover img {
+      opacity: 0.9;
+      transform: scale(1.05);
+    }
+
+    footer {
+      background-color: #000;
+      color: #fff;
+      text-align: center;
+      padding: 20px 10px;
+      margin-top: 40px;
+      font-size: 14px;
+      border-top: 1px solid #111;
+    }
+
+    footer a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      margin: 0 5px;
+    }
+
+    footer a:hover {
+      color: #888;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .frase-impacto {
+        font-size: 16px;
+        margin: 5px 0;
+      }
+
+      .imagem-card {
+        width: 90%;
+        height: auto;
+      }
+
+      .form-container {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <a href="inicio.html">
+      <img src="IMG/logo2.png" alt="Logo LunarisCar">
+    </a>
+    <a href="acesse.html" class="acesse-btn">Cadastre Técnico Já</a>
+    <div class="frase-impacto">"Controle total da manutenção em um só lugar"</div>
+  </header>
+
+  <a href="historicogestor.html" class="historico-btn">Visualize o Histórico de Máquinas</a>
+
+
+  <div class="form-container">
+    <h2>Cadastro de Máquinas</h2>
+    <form id="cadastroForm">
+      <div class="input-group">
+        <label for="nome">Nome da Máquina</label>
+        <input type="text" id="nome" name="nome" required />
+      </div>
+
+      <div class="input-group">
+        <label for="status">Status da Máquina</label>
+        <select id="status" name="status" required>
+          <option value="">Selecione</option>
+          <option value="operacional">Operacional</option>
+          <option value="parado">Parado</option>
+          <option value="em manutencao">Em Manutenção</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label for="data_insercao">Data de Inserção</label>
+        <input type="date" id="data_insercao" name="data_insercao" required />
+      </div>
+
+      <div class="input-group">
+        <label for="data_manutencao">Data Prevista de Manutenção</label>
+        <input type="date" id="data_manutencao" name="data_manutencao" />
+      </div>
+
+      <div class="input-group">
+        <label for="responsavel">Responsável pelo Cadastro</label>
+        <input type="text" id="responsavel" name="responsavel" required />
+      </div>
+
+      <div class="input-group">
+        <label for="responsavel_conserto">Responsável pelo Conserto</label>
+        <input type="text" id="responsavel_conserto" name="responsavel_conserto" required />
+      </div>
+
+      <div class="input-group">
+        <label for="observacoes">Observações</label>
+        <input type="text" id="observacoes" name="observacoes" required />
+      </div>
+
+      <button type="submit" class="submit-btn">Cadastrar Máquina</button>
+    </form>
+
+    <p id="mensagem" style="display:none; color:#00ffcc; margin-top:15px; font-weight:bold;">
+      ✅ Máquina cadastrada com sucesso!
+    </p>
+  </div>
+
+  <footer>
+    &copy; 2025 LunarisCar. Todos os direitos reservados. |
+    <a href="#">Termos de Uso</a> |
+    <a href="#">Privacidade</a>
+  </footer>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script>
+  // Configuração Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyC15XUz9n5NQbFDnLQ4Vs0VJyf-RXkvKoA",
+    authDomain: "manutencao-de-maquinas.firebaseapp.com",
+    projectId: "manutencao-de-maquinas",
+    storageBucket: "manutencao-de-maquinas.firebasestorage.app",
+    messagingSenderId: "828197680262",
+    appId: "1:828197680262:web:46cf8747aa08b18720cd07"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
+
+  const form = document.getElementById('cadastroForm');
+  const mensagem = document.getElementById('mensagem');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const maquina = {
+      nome: document.getElementById('nome').value,
+      status: document.getElementById('status').value,
+      data_insercao: document.getElementById('data_insercao').value,
+      data_manutencao: document.getElementById('data_manutencao').value || "-",
+      responsavel: document.getElementById('responsavel').value,
+      responsavel_conserto: document.getElementById('responsavel_conserto').value,
+      observacoes: document.getElementById('observacoes').value
+      
+    };
+
+    // SALVA NO BANCO DE DADOS
+    database.ref('maquinas').push(maquina)
+      .then(() => {
+        mensagem.style.color = "lightgreen";
+        mensagem.innerText = "✅ Máquina cadastrada com sucesso!";
+        mensagem.style.display = "block";
+        form.reset();
+        setTimeout(() => mensagem.innerText = "", 2500);
+      })
+      .catch((error) => {
+        mensagem.style.color = "red";
+        mensagem.innerText = "Erro ao cadastrar: " + error.message;
+      });
+  });
+</script>
+</body>
+</html>

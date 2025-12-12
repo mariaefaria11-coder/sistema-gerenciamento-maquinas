@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Lunaris Car</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background: url("img/Design\ sem\ nome.png") no-repeat center top;
+      background-size: 100%;
+      background-color: #000;
+      background-attachment: fixed;
+      color: #fff;
+      justify-content: flex-start;
+      align-items: center;
+      padding-top: 200px;
+    }
+
+    .form-container {
+      background-color: rgba(0, 0, 0, 0.85);
+      padding: 40px 50px;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
+      width: 350px;
+      text-align: center;
+    }
+
+    .logo-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 25px;
+      font-style: italic;
+    }
+
+    .logo-title img {
+      width: 60px;
+      height: auto;
+    }
+
+    .logo-title h1 {
+      font-size: 28px;
+      color: #81a1dd;
+      letter-spacing: 1px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    label {
+      font-size: 14px;
+      color: #ccc;
+      text-align: left;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      background-color: #222;
+      color: #fff;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    input:focus, select:focus {
+      background-color: #030303;
+      border: 1px solid #00aaff;
+    }
+
+    .submit-btn {
+      background-color: #00aaff;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+      background-color: #0a71a5;
+    }
+
+    #mensagem {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="form-container">
+    <div class="logo-title">
+      <img src="IMG/logo2.png" alt="Logo Lunaris Car">
+      <h1>Lunaris Car</h1>
+    </div>
+
+    <form id="loginForm">
+      <div class="input-group">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" required />
+      </div>
+
+      <div class="input-group">
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" required />
+      </div>
+
+      <div class="input-group">
+        <label for="role">Função</label>
+        <select id="role" required>
+          <option value="">Selecione</option>
+          <option value="tecnico">Técnico</option>
+          <option value="gestor">Gestor</option>
+        </select>
+      </div>
+
+      <button type="submit" class="submit-btn">Entrar</button>
+      <p id="mensagem"></p>
+    </form>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <script>
+    // Config Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyC15XUz9n5NQbFDnLQ4Vs0VJyf-RXkvKoA",
+      authDomain: "manutencao-de-maquinas.firebaseapp.com",
+      projectId: "manutencao-de-maquinas",
+      storageBucket: "manutencao-de-maquinas.firebasestorage.app",
+      messagingSenderId: "828197680262",
+      appId: "1:828197680262:web:46cf8747aa08b18720cd07"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    // Login
+    document.getElementById("loginForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const senha = document.getElementById("senha").value;
+      const role = document.getElementById("role").value;
+      const msg = document.getElementById("mensagem");
+
+      msg.innerText = "Verificando...";
+      msg.style.color = "white";
+
+      try {
+        const snapshot = await database.ref("usuarios").once("value");
+        let encontrado = false;
+
+        snapshot.forEach((childSnapshot) => {
+          const user = childSnapshot.val();
+          if (user.email === email && user.senha === senha) {
+            encontrado = true;
+
+            if (user.funcao === role) {
+              msg.style.color = "lightgreen";
+              msg.innerText = "Login realizado com sucesso!";
+
+              setTimeout(() => {
+                if (role === "tecnico") window.location.href = "tecnico.html";
+                else if (role === "gestor") window.location.href = "gestor.html";
+              }, 1200);
+            } else {
+              msg.style.color = "red";
+              msg.innerText = "Função incorreta para este usuário.";
+            }
+          }
+        });
+
+        if (!encontrado) {
+          msg.style.color = "red";
+          msg.innerText = "E-mail ou senha incorretos.";
+        }
+      } catch (error) {
+        msg.style.color = "red";
+        msg.innerText = "Erro ao acessar o banco: " + error.message;
+      }
+    });
+  </script>
+</body>
+</html>

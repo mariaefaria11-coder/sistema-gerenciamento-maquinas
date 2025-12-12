@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LunarisCar - Histórico de Máquinas</title>
+  <link rel="icon" type="image/x-icon" href="IMG/logo2.png">
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #000;
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #111;
+    }
+
+    header a img {
+      max-width: 80px;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    header a img:hover {
+      transform: scale(1.1);
+    }
+
+    h1 {
+      font-size: 20px;
+      color: #00aaff;
+      text-align: center;
+      flex: 1;
+      font-style: italic;
+    }
+
+    .frase-impacto {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+      flex: 1;
+      margin: 0 20px;
+      font-style: italic;
+      letter-spacing: 1px;
+    }
+
+    main {
+      padding: 40px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      text-align: center;
+      color: #00aaff;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #0a1a33;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0, 170, 255, 0.2);
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #222;
+    }
+
+    th {
+      background-color: #003366;
+      color: #00aaff;
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background-color: rgba(0, 170, 255, 0.1);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .empty-message {
+      text-align: center;
+      color: #aaa;
+      padding: 20px;
+    }
+
+    .btn-voltar {
+      display: inline-block;
+      margin-top: 30px;
+      text-decoration: none;
+      color: #fff;
+      background-color: #00aaff;
+      padding: 10px 20px;
+      border-radius: 5px;
+      transition: 0.3s;
+    }
+
+    .btn-voltar:hover {
+      background-color: #0077cc;
+    }
+
+    .btn-deletar {
+      background-color: #ff3333;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn-deletar:hover {
+      background-color: #cc0000;
+    }
+
+    footer {
+      text-align: center;
+      color: #ccc;
+      padding: 20px;
+      border-top: 1px solid #111;
+      margin-top: 40px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <a href="inicio.html">
+      <img src="IMG/logo2.png" alt="Logo LunarisCar">
+    </a>
+    <div class="frase-impacto">"Controle total da manutenção em um só lugar"</div>
+  </header>
+ 
+  <h1>Histórico de Máquinas Registradas</h1>
+
+  <main>
+    <h2>Máquinas Cadastradas</h2>
+
+    <table id="tabelaMaquinas">
+      <thead>
+        <tr>
+          <th>Nome da Máquina</th>
+          <th>Status</th>
+          <th>Data de Inserção</th>
+          <th>Data Manutenção</th>
+          <th>Responsável Cadastro</th>
+          <th>Responsável Conserto</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="tabelaCorpo">
+        <!-- As linhas serão geradas pelo JavaScript -->
+      </tbody>
+    </table>
+
+    <p id="mensagemVazia" class="empty-message" style="display: none;">Nenhuma máquina cadastrada até o momento.</p>
+
+    <div style="text-align: center;">
+      <a href="gestor.html" class="btn-voltar">Voltar ao Cadastro</a>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 LunarisCar. Todos os direitos reservados.
+  </footer>
+
+  <script>
+    const tabelaCorpo = document.getElementById('tabelaCorpo');
+    const mensagemVazia = document.getElementById('mensagemVazia');
+
+    // Lê as máquinas salvas no localStorage
+    let maquinas = JSON.parse(localStorage.getItem('maquinas')) || [];
+
+    // Função para atualizar a tabela
+    function atualizarTabela() {
+      tabelaCorpo.innerHTML = "";
+
+      if (maquinas.length === 0) {
+        mensagemVazia.style.display = 'block';
+        return;
+      }
+
+      mensagemVazia.style.display = 'none';
+
+      maquinas.forEach((maquina, index) => {
+        const linha = document.createElement('tr');
+        linha.innerHTML = `
+          <td>${maquina.nome}</td>
+          <td>${maquina.status}</td>
+          <td>${maquina.data_insercao}</td>
+          <td>${maquina.data_manutencao || '-'}</td>
+          <td>${maquina.responsavel}</td>
+          <td>${maquina.responsavel_conserto}</td>
+          <td><button class="btn-deletar" onclick="deletarMaquina(${index})">🗑️ Deletar</button></td>
+        `;
+        tabelaCorpo.appendChild(linha);
+      });
+    }
+
+    // Função para deletar uma máquina específica
+    function deletarMaquina(index) {
+      const confirmar = confirm("Tem certeza que deseja deletar esta máquina?");
+      if (confirmar) {
+        maquinas.splice(index, 1); // Remove a máquina do array
+        localStorage.setItem('maquinas', JSON.stringify(maquinas)); // Atualiza o localStorage
+        atualizarTabela(); // Atualiza a exibição
+        alert("Máquina deletada com sucesso!");
+      }
+    }
+
+    // Inicializa a tabela
+    atualizarTabela();
+  </script>
+</body>
+</html>

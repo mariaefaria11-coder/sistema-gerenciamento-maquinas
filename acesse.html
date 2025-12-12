@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastre-se aqui!</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background: url("img/Design\ sem\ nome.png") no-repeat center top;
+      background-size: 100%; 
+      background-color: #000; 
+      background-attachment: fixed;
+      color: #fff;
+      justify-content: flex-start;
+      align-items: center;
+      padding-top: 200px;
+    }
+
+    .form-container {
+      background-color: rgba(0, 0, 0, 0.85);
+      padding: 40px 50px;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
+      width: 350px;
+      text-align: center;
+    }
+
+    .logo-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 25px;
+      font-style: italic;
+    }
+
+    .logo-title img {
+      width: 60px;
+      height: auto;
+    }
+
+    .logo-title h1 {
+      font-size: 28px;
+      color: #81a1dd;
+      letter-spacing: 1px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .input-group {
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 6px;
+      color: #ccc;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      background-color: #222;
+      color: #fff;
+      transition: 0.3s;
+    }
+
+    input:focus, select:focus {
+      background-color: #030303;
+      border: 1px solid #00aaff;
+    }
+
+    .input-group input[type="checkbox"] {
+      width: auto;
+      margin-right: 8px;
+      accent-color: #00aaff;
+    }
+
+    .submit-btn {
+      background-color: #00aaff;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 10px;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .submit-btn:hover {
+      background-color: #0a71a5;
+    }
+
+    p {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #ccc;
+    }
+
+    a {
+      color: #006699;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 400px) {
+      .form-container {
+        width: 90%;
+        padding: 30px;
+      }
+
+      .logo-title img {
+        width: 45px;
+      }
+
+      .logo-title h1 {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="form-container">
+    <div class="logo-title">
+      <img src="IMG/logo2.png" alt="Logo Lunaris Car">
+      <h1>Lunaris Car</h1>
+    </div>
+
+    <form id="cadastroForm">
+      <div class="input-group">
+        <label for="email">Informe o seu e-mail</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+
+      <div class="input-group">
+        <label for="telefone">Informe o seu telefone</label>
+        <input type="tel" id="telefone" name="telefone" required />
+      </div>
+
+      <div class="input-group">
+        <label for="Senha">Senha</label>
+        <input type="password" id="Senha" name="Senha" required />
+      </div>
+
+      <div class="input-group">
+        <label for="confirmar-senha">Confirmar senha</label>
+        <input type="password" id="confirmar-senha" name="confirmar-senha" required />
+      </div>
+
+      <div class="input-group">
+        <label for="role">Selecione sua função</label>
+        <select id="role" name="role" required>
+          <option value="">Selecione</option>
+          <option value="tecnico">Técnico</option>
+          <option value="gestor">Gestor</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label for="termos">
+          <input type="checkbox" id="termos" name="termos" required /> Aceito os termos e condições
+        </label>
+      </div>
+
+      <button type="submit" class="submit-btn">Cadastrar</button>
+      <p id="mensagem"></p>
+    </form>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <script>
+    // Configuração do Firebase
+    const firebaseConfig = {
+  apiKey: "AIzaSyC15XUz9n5NQbFDnLQ4Vs0VJyf-RXkvKoA",
+  authDomain: "manutencao-de-maquinas.firebaseapp.com",
+  projectId: "manutencao-de-maquinas",
+  storageBucket: "manutencao-de-maquinas.firebasestorage.app",
+  messagingSenderId: "828197680262",
+  appId: "1:828197680262:web:46cf8747aa08b18720cd07"
+};
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    // Cadastro
+    document.getElementById('cadastroForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const telefone = document.getElementById('telefone').value.trim();
+      const senha = document.getElementById('Senha').value;
+      const confirmarSenha = document.getElementById('confirmar-senha').value;
+      const role = document.getElementById('role').value;
+      const termos = document.getElementById('termos').checked;
+
+      const msg = document.getElementById('mensagem');
+
+      if (senha !== confirmarSenha) {
+        msg.innerText = "As senhas não coincidem!";
+        return;
+      }
+
+      // Salva no banco de dados
+      database.ref('usuarios').push({
+        email: email,
+        telefone: telefone,
+        senha: senha,
+        funcao: role,
+        termosAceitos: termos,
+        dataCadastro: new Date().toLocaleString("pt-BR")
+      })
+      .then(() => {
+        msg.style.color = "lightgreen";
+        msg.innerText = "Cadastro realizado com sucesso!";
+      })
+      .catch((error) => {
+        msg.style.color = "red";
+        msg.innerText = "Erro ao cadastrar: " + error.message;
+      });
+    });
+  </script>
+</body>
+</html>
